@@ -8,11 +8,11 @@ namespace Cium\Tools;
 
 /**
  * Csv文件输出
- * Class PhpCsv
+ * Class Csv
  *
  * @package helper
  */
-class PhpCsv
+class Csv
 {
     /**
      * 输出header

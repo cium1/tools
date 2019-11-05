@@ -8,11 +8,11 @@ namespace Cium\Tools;
 
 /**
  * 批量CURL下载
- * Class BatchDownLoad
+ * Class BatchDown
  *
  * @package helper
  */
-class BatchDownLoad
+class BatchDown
 {
     /**
      * 下载文件
