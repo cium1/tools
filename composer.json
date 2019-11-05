@@ -1,0 +1,27 @@
+{
+    "name": "cium/tools",
+    "license": "MIT",
+    "description": "PHP工具类",
+    "authors": [
+        {
+            "name": "cium",
+            "email": "ye91@foxmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Cium\\Tools\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.0.0",
+        "ext-mbstring": "*",
+        "ext-json": "*",
+        "ext-libxml": "*",
+        "ext-simplexml": "*",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "fzaninotto/faker": "^1.8"
+    }
+}
