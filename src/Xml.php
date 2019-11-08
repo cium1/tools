@@ -11,8 +11,8 @@ namespace Cium\Tools;
 class Xml
 {
     static private $instance;
-    // 数据编码
-    private $encoding = 'utf-8';
+    // 数据编码(utf-8)
+    private $encoding = '';
     // 根节点名
     private $rootNode = 'root';
     // 根节点属性
@@ -87,7 +87,8 @@ class Xml
     {
         if (is_string($data)) {
             if (strpos($data, '<?xml') !== 0) {
-                $xml = "<?xml version=\"1.0\" encoding=\"{$this->encoding}\"?>";
+                $encoding = strlen($this->encoding) ? " encoding=\"{$this->encoding}\"" : '';
+                $xml = "<?xml version=\"1.0\"{$encoding}?>";
                 $data = $xml . $data;
             }
             return $data;
