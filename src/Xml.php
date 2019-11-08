@@ -136,7 +136,8 @@ class Xml
 
         $attr = trim($attr);
         $attr = empty($attr) ? '' : " {$attr}";
-        $xml = "<?xml version=\"1.0\" encoding=\"{$encoding}\"?>";
+        $encoding = strlen($this->encoding) ? " encoding=\"{$this->encoding}\"" : '';
+        $xml = "<?xml version=\"1.0\"{$encoding}?>";
         $xml .= "<{$root}{$attr}>";
         $xml .= $this->dataToXml($data, $item, $id);
         $xml .= "</{$root}>";
