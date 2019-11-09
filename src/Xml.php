@@ -12,7 +12,7 @@ class Xml
 {
     static private $instance;
     // 数据编码(utf-8)
-    private $encoding = '';
+    private $encoding = 'utf-8';
     // 根节点名
     private $rootNode = 'root';
     // 根节点属性
