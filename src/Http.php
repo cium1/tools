@@ -116,11 +116,13 @@ class Http
     private static function buildQueryData($data, $build = true)
     {
         if (!is_array($data)) return $data;
-        foreach ($data as $key => $value) if (is_object($value) && $value instanceof \CURLFile) {
-            $build = false;
-        } elseif (is_string($value) && class_exists('CURLFile', false) && stripos($value, '@') === 0) {
-            if (($filename = realpath(trim($value, '@'))) && file_exists($filename)) {
-                list($build, $data[$key]) = [false, new \CURLFile($filename)];
+        foreach ($data as $key => $value) {
+            if (is_object($value) && $value instanceof \CURLFile) {
+                $build = false;
+            } elseif (is_string($value) && class_exists('CURLFile', false) && stripos($value, '@') === 0) {
+                if (($filename = realpath(trim($value, '@'))) && file_exists($filename)) {
+                    list($build, $data[$key]) = [false, new \CURLFile($filename)];
+                }
             }
         }
         return $build ? http_build_query($data) : $data;
