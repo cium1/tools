@@ -10,7 +10,7 @@ namespace Cium\Tools;
 
 class Xml
 {
-    static private $instance;
+    private static $instance;
     // 数据编码(utf-8)
     private $encoding = 'utf-8';
     // 根节点名
@@ -27,11 +27,14 @@ class Xml
      *
      * @return Xml
      */
-    static public function instance()
+    static function instance()
     {
-        if (!self::$instance instanceof self) self::$instance = new self;
+        if (!isset(self::$instance)) {
+            self::$instance = new static();
+        }
         return self::$instance;
     }
+
 
     /**
      * 编码
