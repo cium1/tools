@@ -8,6 +8,15 @@ namespace Cium\Tools;
  */
 class Http
 {
+    const GET = 'get';
+    const POST = 'post';
+    const QUERY = 'query';
+    const FORM_PARAMS = 'form_params';
+    const HEADERS = 'headers';
+    const TIMEOUT = 'timeout';
+    const COOKIES = 'cookies';
+    const COOKIE_FILE = 'cookie_file';
+
     /**
      * 以get模拟网络请求
      *
@@ -19,23 +28,23 @@ class Http
      */
     public static function get($url, $query = [], $options = [])
     {
-        $options['query'] = $query;
-        return self::request('get', $url, $options);
+        $options[self::QUERY] = $query;
+        return self::request(self::GET, $url, $options);
     }
 
     /**
      * 以get模拟网络请求
      *
-     * @param string $url     HTTP请求URL地址
-     * @param array  $data    POST请求数据
-     * @param array  $options CURL参数
+     * @param string $url         HTTP请求URL地址
+     * @param array  $form_params POST请求数据
+     * @param array  $options     CURL参数
      *
      * @return boolean|string
      */
-    public static function post($url, $data = [], $options = [])
+    public static function post($url, $form_params = [], $options = [])
     {
-        $options['data'] = $data;
-        return self::request('post', $url, $options);
+        $options[self::FORM_PARAMS] = $form_params;
+        return self::request(self::POST, $url, $options);
     }
 
     /**
@@ -46,7 +55,7 @@ class Http
      */
     public static function download($url, $local)
     {
-        $content = self::request('get', $url);
+        $content = self::request(self::GET, $url);
         $f = fopen($local, 'w');
         fwrite($f, $content);
         fclose($f);
@@ -65,31 +74,31 @@ class Http
     {
         $curl = curl_init();
         // GET 参数设置
-        if (!empty($options['query'])) {
-            $url .= (stripos($url, '?') !== false ? '&' : '?') . http_build_query($options['query']);
+        if (!empty($options[self::QUERY])) {
+            $url .= (stripos($url, '?') !== false ? '&' : '?') . http_build_query($options[self::QUERY]);
         }
         // 浏览器代理设置
         curl_setopt($curl, CURLOPT_USERAGENT, self::getUserAgent());
         // CURL 头信息设置
-        if (!empty($options['headers'])) {
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $options['headers']);
+        if (!empty($options[self::HEADERS])) {
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $options[self::HEADERS]);
         }
         // Cookie 信息设置
-        if (!empty($options['cookie'])) {
-            curl_setopt($curl, CURLOPT_COOKIE, $options['cookie']);
+        if (!empty($options[self::COOKIES])) {
+            curl_setopt($curl, CURLOPT_COOKIE, $options[self::COOKIES]);
         }
-        if (!empty($options['cookie_file'])) {
-            curl_setopt($curl, CURLOPT_COOKIEJAR, $options['cookie_file']);
-            curl_setopt($curl, CURLOPT_COOKIEFILE, $options['cookie_file']);
+        if (!empty($options[self::COOKIE_FILE])) {
+            curl_setopt($curl, CURLOPT_COOKIEJAR, $options[self::COOKIE_FILE]);
+            curl_setopt($curl, CURLOPT_COOKIEFILE, $options[self::COOKIE_FILE]);
         }
         // POST 数据设置
-        if (strtolower($method) === 'post') {
+        if (strtolower($method) === strtolower(self::POST)) {
             curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, self::buildQueryData($options['data']));
+            curl_setopt($curl, CURLOPT_POSTFIELDS, self::buildQueryData($options[self::FORM_PARAMS]));
         }
         // 请求超时设置
-        if (isset($options['timeout']) && is_numeric($options['timeout'])) {
-            curl_setopt($curl, CURLOPT_TIMEOUT, $options['timeout']);
+        if (isset($options[self::TIMEOUT]) && is_numeric($options[self::TIMEOUT])) {
+            curl_setopt($curl, CURLOPT_TIMEOUT, $options[self::TIMEOUT]);
         } else {
             curl_setopt($curl, CURLOPT_TIMEOUT, 60);
         }
